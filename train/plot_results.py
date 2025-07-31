@@ -1,0 +1,126 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.style as style
+from matplotlib.lines import Line2D
+import io
+import os
+import numpy as np
+
+# --- Configuration ---
+# <<< CHANGE THIS VARIABLE to your desired output folder >>>
+output_directory = "/home/sac/vinayak/ModelSouth/evaluation_plots"
+
+# --- Setup ---
+# Use a visually appealing style for the plots
+style.use('seaborn-v0_8-whitegrid')
+
+# Create the output directory if it doesn't exist
+os.makedirs(output_directory, exist_ok=True)
+print(f"Plots will be saved to the '{os.path.abspath(output_directory)}' directory.")
+
+# --- Provided CSV Data ---
+csv_data = """epoch,pred_MAE_30-min,pred_CRPS_30-min,pred_CSI@0.5_30-min,pred_FSS@0.5_30-min,pred_CSI@2.5_30-min,pred_FSS@2.5_30-min,pred_CSI@7.6_30-min,pred_FSS@7.6_30-min,pred_CSI@10.0_30-min,pred_FSS@10.0_30-min,pred_CSI@16_30-min,pred_FSS@16_30-min,pred_CSI@25.0_30-min,pred_FSS@25.0_30-min,pred_CSI@50_30-min,pred_FSS@50_30-min,pers_MAE_30-min,pers_CSI@0.5_30-min,pers_FSS@0.5_30-min,pers_CSI@2.5_30-min,pers_FSS@2.5_30-min,pers_CSI@7.6_30-min,pers_FSS@7.6_30-min,pers_CSI@10.0_30-min,pers_FSS@10.0_30-min,pers_CSI@16_30-min,pers_FSS@16_30-min,pers_CSI@25.0_30-min,pers_FSS@25.0_30-min,pers_CSI@50_30-min,pers_FSS@50_30-min,pred_MAE_60-min,pred_CRPS_60-min,pred_CSI@0.5_60-min,pred_FSS@0.5_60-min,pred_CSI@2.5_60-min,pred_FSS@2.5_60-min,pred_CSI@7.6_60-min,pred_FSS@7.6_60-min,pred_CSI@10.0_60-min,pred_FSS@10.0_60-min,pred_CSI@16_60-min,pred_FSS@16_60-min,pred_CSI@25.0_60-min,pred_FSS@25.0_60-min,pred_CSI@50_60-min,pred_FSS@50_60-min,pers_MAE_60-min,pers_CSI@0.5_60-min,pers_FSS@0.5_60-min,pers_CSI@2.5_60-min,pers_FSS@2.5_60-min,pers_CSI@7.6_60-min,pers_FSS@7.6_60-min,pers_CSI@10.0_60-min,pers_FSS@10.0_60-min,pers_CSI@16_60-min,pers_FSS@16_60-min,pers_CSI@25.0_60-min,pers_FSS@25.0_60-min,pers_CSI@50_60-min,pers_FSS@50_60-min,pred_MAE_90-min,pred_CRPS_90-min,pred_CSI@0.5_90-min,pred_FSS@0.5_90-min,pred_CSI@2.5_90-min,pred_FSS@2.5_90-min,pred_CSI@7.6_90-min,pred_FSS@7.6_90-min,pred_CSI@10.0_90-min,pred_FSS@10.0_90-min,pred_CSI@16_90-min,pred_FSS@16_90-min,pred_CSI@25.0_90-min,pred_FSS@25.0_90-min,pred_CSI@50_90-min,pred_FSS@50_90-min,pers_MAE_90-min,pers_CSI@0.5_90-min,pers_FSS@0.5_90-min,pers_CSI@2.5_90-min,pers_FSS@2.5_90-min,pers_CSI@7.6_90-min,pers_FSS@7.6_90-min,pers_CSI@10.0_90-min,pers_FSS@10.0_90-min,pers_CSI@16_90-min,pers_FSS@16_90-min,pers_CSI@25.0_90-min,pers_FSS@25.0_90-min,pers_CSI@50_90-min,pers_FSS@50_90-min,pred_MAE_120-min,pred_CRPS_120-min,pred_CSI@0.5_120-min,pred_FSS@0.5_120-min,pred_CSI@2.5_120-min,pred_FSS@2.5_120-min,pred_CSI@7.6_120-min,pred_FSS@7.6_120-min,pred_CSI@10.0_120-min,pred_FSS@10.0_120-min,pred_CSI@16_120-min,pred_FSS@16_120-min,pred_CSI@25.0_120-min,pred_FSS@25.0_120-min,pred_CSI@50_120-min,pred_FSS@50_120-min,pers_MAE_120-min,pers_CSI@0.5_120-min,pers_FSS@0.5_120-min,pers_CSI@2.5_120-min,pers_FSS@2.5_120-min,pers_CSI@7.6_120-min,pers_FSS@7.6_120-min,pers_CSI@10.0_120-min,pers_FSS@10.0_120-min,pers_CSI@16_120-min,pers_FSS@16_120-min,pers_CSI@25.0_120-min,pers_FSS@25.0_120-min,pers_CSI@50_120-min,pers_FSS@50_120-min,pred_MAE_150-min,pred_CRPS_150-min,pred_CSI@0.5_150-min,pred_FSS@0.5_150-min,pred_CSI@2.5_150-min,pred_FSS@2.5_150-min,pred_CSI@7.6_150-min,pred_FSS@7.6_150-min,pred_CSI@10.0_150-min,pred_FSS@10.0_150-min,pred_CSI@16_150-min,pred_FSS@16_150-min,pred_CSI@25.0_150-min,pred_FSS@25.0_150-min,pred_CSI@50_150-min,pred_FSS@50_150-min,pers_MAE_150-min,pers_CSI@0.5_150-min,pers_FSS@0.5_150-min,pers_CSI@2.5_150-min,pers_FSS@2.5_150-min,pers_CSI@7.6_150-min,pers_FSS@7.6_150-min,pers_CSI@10.0_150-min,pers_FSS@10.0_150-min,pers_CSI@16_150-min,pers_FSS@16_150-min,pers_CSI@25.0_150-min,pers_FSS@25.0_150-min,pers_CSI@50_150-min,pers_FSS@50_150-min,pred_MAE_180-min,pred_CRPS_180-min,pred_CSI@0.5_180-min,pred_FSS@0.5_180-min,pred_CSI@2.5_180-min,pred_FSS@2.5_180-min,pred_CSI@7.6_180-min,pred_FSS@7.6_180-min,pred_CSI@10.0_180-min,pred_FSS@10.0_180-min,pred_CSI@16_180-min,pred_FSS@16_180-min,pred_CSI@25.0_180-min,pred_FSS@25.0_180-min,pred_CSI@50_180-min,pred_FSS@50_180-min,pers_MAE_180-min,pers_CSI@0.5_180-min,pers_FSS@0.5_180-min,pers_CSI@2.5_180-min,pers_FSS@2.5_180-min,pers_CSI@7.6_180-min,pers_FSS@7.6_180-min,pers_CSI@10.0_180-min,pers_FSS@10.0_180-min,pers_CSI@16_180-min,pers_FSS@16_180-min,pers_CSI@25.0_180-min,pers_FSS@25.0_180-min,pers_CSI@50_180-min,pers_FSS@50_180-min
+0,0.27045492889627976,0.2679306540955949,0.13873557553911658,0.6150536449666524,0.9379526332742876,0.6625974876596042,0.9675606959220129,0.4860269772090159,0.847819138108064,0.5853697752674536,0.9391266318402737,0.29366677736367713,0.6280129701637835,0.481866405937247,0.8919674650543816,0.2512836963593379,0.5678392083146603,0.4611715753620504,0.8827537677648875,0.20455994102700414,0.4952800536306581,0.43386368867949193,0.8723534035581308,0.12734291630988231,0.3309779784310365,0.358132439459533,0.8313646199303752,0.0012535414455413535,0.0030204354193011746,0.1323980960386042,0.59252005698704,0.19188368264752106,0.18986252363212094,0.2015758642545755,0.547103972471239,0.9166094734677727,0.5437619766205908,0.935447867203681,0.44442139256815905,0.8466799891419823,0.4454231300387323,0.8732065905883946,0.3201703919487292,0.7358736070314945,0.3304522303543006,0.7752123280134038,0.29841599091379534,0.7139023336038299,0.30838935144745905,0.7540791923913595,0.25242072226265105,0.6589380100720286,0.2794634884732062,0.7272265040833824,0.17593002766647495,0.5404201464525931,0.21204467128136192,0.64892362525022,0.0023093655382199624,0.04772176214138604,0.07709091680214497,0.5117010665212618,0.21420892455849683,0.2121314170698162,0.24871108331089756,0.4581147470698264,0.8660177715345507,0.46535033446685886,0.9040483086024921,0.30554580559607764,0.6998687552435837,0.3536742650234895,0.8064391068778961,0.14548518162743784,0.43704255141835663,0.2366470737336879,0.6578976155962041,0.11372535998895428,0.3686695304905402,0.21494530409226525,0.6252007126264711,0.05999033985060806,0.21937443966923298,0.18860664596339893,0.5845542908610373,0.02418353209069596,0.10089643462401333,0.13081575555512315,0.48447407278701893,0.0,0.453856471161521,0.03111403674811144,0.4320624453590642,0.23757148459442903,0.2354394381120261,0.28392078834663037,0.37526759513739827,0.798623524707136,0.4119372522576341,0.8768366693303637,0.1905428025970172,0.5153352840616462,0.2908343738620737,0.7466041540669487,0.046772415721098796,0.16882272065599938,0.17589074349334016,0.556084466271391,0.02912196400717166,0.1125824792008434,0.15545324523353618,0.5146626726345938,0.010125996020409709,0.04211176181999011,0.13059956746177961,0.4627520133364168,0.0018014045922279361,0.009819255373339261,0.08294121455029589,0.3545193902280551,0.0,0.5369329484886038,0.012635776905829628,0.3996104385868953,0.24918780490701212,0.24716962965396394,0.31165673947315015,0.31242697602649455,0.7248447060464024,0.3719217313817412,0.8528650238361872,0.12283312892546366,0.36965508725403895,0.24477775632307114,0.6939056609273695,0.01775292852809554,0.0698214086529464,0.1336249883084353,0.46943654283124736,0.00921941584538545,0.038924279337924056,0.11464489250506602,0.4215923846179561,0.0020489179243083876,0.008688135563854322,0.09160502415530078,0.363203263370687,0.00013249692570001598,0.001846406598018764,0.053380109491642076,0.25979209882704546,0.0,0.5378584431314815,0.0020200387826473914,0.38309444042539614,0.25528076918040404,0.25351071555934357,0.33362024871437135,0.25282661064019585,0.6268040834023364,0.3410800811874714,0.8321093381808081,0.08247494035438592,0.26307129354949266,0.21037124549793995,0.6484821983728484,0.007825562826905637,0.03166442567387431,0.10363991159332453,0.39837442727599676,0.003464806490098633,0.014258969705107734,0.08589939250027293,0.3468515042092734,0.0005596834475106812,0.0024792485516401575,0.06507455258002819,0.2851817422019551,0.0,0.0007759195125176507,0.0352226247839251,0.19316643767440256,0.0,0.5718111036610406,0.0,0.3921975181317479
+"""
+
+# Read the data into a pandas DataFrame
+df = pd.read_csv(io.StringIO(csv_data))
+
+# Define the lead times and thresholds from the column names
+lead_times = [30, 60, 90, 120, 150, 180]
+thresholds = [0.5, 2.5, 7.6, 10.0, 16, 25.0, 50]
+single_row = df.loc[0] # All data is in the first row (epoch 0)
+
+# --- Plot 1: MAE and CRPS vs. Lead Time ---
+pred_mae = [single_row[f'pred_MAE_{lt}-min'] for lt in lead_times]
+pers_mae = [single_row[f'pers_MAE_{lt}-min'] for lt in lead_times]
+pred_crps = [single_row[f'pred_CRPS_{lt}-min'] for lt in lead_times]
+
+fig1, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6), sharey=False)
+fig1.suptitle('Error Metrics vs. Forecast Lead Time (Lower is Better)', fontsize=16)
+
+# Subplot for MAE
+ax1.plot(lead_times, pred_mae, 'o-', label='Prediction MAE', color='crimson')
+ax1.plot(lead_times, pers_mae, 'o--', label='Persistence MAE', color='darkblue')
+ax1.set_title('Mean Absolute Error (MAE)', fontsize=12)
+ax1.set_xlabel('Lead Time (minutes)')
+ax1.set_ylabel('MAE')
+ax1.legend()
+ax1.set_xticks(lead_times)
+
+# Subplot for CRPS
+ax2.plot(lead_times, pred_crps, 'o-', label='Prediction CRPS', color='crimson')
+ax2.set_title('Continuous Ranked Probability Score (CRPS)', fontsize=12)
+ax2.set_xlabel('Lead Time (minutes)')
+ax2.set_ylabel('CRPS')
+ax2.legend()
+ax2.set_xticks(lead_times)
+
+plt.tight_layout(rect=[0, 0, 1, 0.96])
+# Save the figure to the specified directory
+filepath1 = os.path.join(output_directory, 'error_metrics_vs_lead_time.png')
+plt.savefig(filepath1, dpi=300, bbox_inches='tight')
+plt.close(fig1) # Close the figure to free memory
+print(f"Saved plot: {filepath1}")
+
+
+# --- Plot 2: CSI vs. Lead Time ---
+fig2, ax_csi = plt.subplots(figsize=(12, 8))
+colors = plt.cm.viridis(np.linspace(0, 1, len(thresholds)))
+
+for i, thr in enumerate(thresholds):
+    pred_csi = [single_row.get(f'pred_CSI@{thr}_{lt}-min', np.nan) for lt in lead_times]
+    pers_csi = [single_row.get(f'pers_CSI@{thr}_{lt}-min', np.nan) for lt in lead_times]
+    ax_csi.plot(lead_times, pred_csi, 'o-', color=colors[i], label=f'{thr} mm/hr')
+    ax_csi.plot(lead_times, pers_csi, 'o--', color=colors[i])
+
+ax_csi.set_title('Critical Success Index (CSI) vs. Lead Time (Higher is Better)', fontsize=16)
+ax_csi.set_xlabel('Lead Time (minutes)')
+ax_csi.set_ylabel('CSI Score')
+ax_csi.set_ylim(0, 1.05)
+ax_csi.set_xticks(lead_times)
+
+handles, labels = ax_csi.get_legend_handles_labels()
+style_legend = [Line2D([0], [0], color='gray', linestyle='-'), Line2D([0], [0], color='gray', linestyle='--')]
+legend1 = ax_csi.legend(handles, labels, title='Thresholds', loc='upper right')
+ax_csi.add_artist(legend1)
+ax_csi.legend(style_legend, ['Prediction', 'Persistence'], loc='upper left')
+
+plt.tight_layout()
+# Save the figure to the specified directory
+filepath2 = os.path.join(output_directory, 'csi_vs_lead_time.png')
+plt.savefig(filepath2, dpi=300, bbox_inches='tight')
+plt.close(fig2) # Close the figure to free memory
+print(f"Saved plot: {filepath2}")
+
+
+# --- Plot 3: FSS vs. Lead Time ---
+fig3, ax_fss = plt.subplots(figsize=(12, 8))
+colors = plt.cm.plasma(np.linspace(0, 1, len(thresholds)))
+
+for i, thr in enumerate(thresholds):
+    pred_fss = [single_row.get(f'pred_FSS@{thr}_{lt}-min', np.nan) for lt in lead_times]
+    pers_fss = [single_row.get(f'pers_FSS@{thr}_{lt}-min', np.nan) for lt in lead_times]
+    ax_fss.plot(lead_times, pred_fss, 'o-', color=colors[i], label=f'{thr} mm/hr')
+    ax_fss.plot(lead_times, pers_fss, 'o--', color=colors[i])
+    
+ax_fss.set_title('Fractions Skill Score (FSS) vs. Lead Time (Higher is Better)', fontsize=16)
+ax_fss.set_xlabel('Lead Time (minutes)')
+ax_fss.set_ylabel('FSS Score')
+ax_fss.set_ylim(0, 1.05)
+ax_fss.set_xticks(lead_times)
+
+handles, labels = ax_fss.get_legend_handles_labels()
+style_legend = [Line2D([0], [0], color='gray', linestyle='-'), Line2D([0], [0], color='gray', linestyle='--')]
+legend1 = ax_fss.legend(handles, labels, title='Thresholds', loc='upper right')
+ax_fss.add_artist(legend1)
+ax_fss.legend(style_legend, ['Prediction', 'Persistence'], loc='upper left')
+
+plt.tight_layout()
+# Save the figure to the specified directory
+filepath3 = os.path.join(output_directory, 'fss_vs_lead_time.png')
+plt.savefig(filepath3, dpi=300, bbox_inches='tight')
+plt.close(fig3) # Close the figure to free memory
+print(f"Saved plot: {filepath3}")
+
+print("\nAll plots have been generated and saved successfully.")
