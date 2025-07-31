@@ -102,34 +102,7 @@ loss.backward()
 }
 ```
 
-## Contributors ✨
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tbody>
-    <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://www.jacobbieker.com"><img src="https://avatars.githubusercontent.com/u/7170359?v=4?s=100" width="100px;" alt="Jacob Bieker"/><br /><sub><b>Jacob Bieker</b></sub></a><br /><a href="https://github.com/openclimatefix/skillful_nowcasting/commits?author=jacobbieker" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="http://johmathe.name/"><img src="https://avatars.githubusercontent.com/u/467643?v=4?s=100" width="100px;" alt="Johan Mathe"/><br /><sub><b>Johan Mathe</b></sub></a><br /><a href="https://github.com/openclimatefix/skillful_nowcasting/commits?author=johmathe" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ZHANGZ1YUE"><img src="https://avatars.githubusercontent.com/u/93907996?v=4?s=100" width="100px;" alt="Z1YUE"/><br /><sub><b>Z1YUE</b></sub></a><br /><a href="https://github.com/openclimatefix/skillful_nowcasting/issues?q=author%3AZHANGZ1YUE" title="Bug reports">🐛</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/GreenLimeSia"><img src="https://avatars.githubusercontent.com/u/28706611?v=4?s=100" width="100px;" alt="Nan.Y"/><br /><sub><b>Nan.Y</b></sub></a><br /><a href="#question-GreenLimeSia" title="Answering Questions">💬</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/hedaobaishui"><img src="https://avatars.githubusercontent.com/u/20534146?v=4?s=100" width="100px;" alt="Taisanai"/><br /><sub><b>Taisanai</b></sub></a><br /><a href="#question-hedaobaishui" title="Answering Questions">💬</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/primeoc"><img src="https://avatars.githubusercontent.com/u/75205487?v=4?s=100" width="100px;" alt="cameron"/><br /><sub><b>cameron</b></sub></a><br /><a href="#question-primeoc" title="Answering Questions">💬</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/zhrli"><img src="https://avatars.githubusercontent.com/u/11074703?v=4?s=100" width="100px;" alt="zhrli"/><br /><sub><b>zhrli</b></sub></a><br /><a href="#question-zhrli" title="Answering Questions">💬</a></td>
-    </tr>
-    <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/najeeb-kazmi"><img src="https://avatars.githubusercontent.com/u/14131235?v=4?s=100" width="100px;" alt="Najeeb Kazmi"/><br /><sub><b>Najeeb Kazmi</b></sub></a><br /><a href="#question-najeeb-kazmi" title="Answering Questions">💬</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/TQRTQ"><img src="https://avatars.githubusercontent.com/u/29155385?v=4?s=100" width="100px;" alt="TQRTQ"/><br /><sub><b>TQRTQ</b></sub></a><br /><a href="#question-TQRTQ" title="Answering Questions">💬</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/viktor-bordiuzha-93b078211"><img src="https://avatars.githubusercontent.com/u/43813476?v=4?s=100" width="100px;" alt="Viktor Bordiuzha"/><br /><sub><b>Viktor Bordiuzha</b></sub></a><br /><a href="#example-victor30608" title="Examples">💡</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/agijsberts"><img src="https://avatars.githubusercontent.com/u/1579083?v=4?s=100" width="100px;" alt="agijsberts"/><br /><sub><b>agijsberts</b></sub></a><br /><a href="https://github.com/openclimatefix/skillful_nowcasting/commits?author=agijsberts" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Mews"><img src="https://avatars.githubusercontent.com/u/60406199?v=4?s=100" width="100px;" alt="Mews"/><br /><sub><b>Mews</b></sub></a><br /><a href="https://github.com/openclimatefix/skillful_nowcasting/commits?author=Mews" title="Tests">⚠️</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/rutkovskii"><img src="https://avatars.githubusercontent.com/u/70371908?v=4?s=100" width="100px;" alt="Aleksei Rutkovskii"/><br /><sub><b>Aleksei Rutkovskii</b></sub></a><br /><a href="https://github.com/openclimatefix/skillful_nowcasting/commits?author=rutkovskii" title="Code">💻</a></td>
-    </tr>
-  </tbody>
-</table>
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
